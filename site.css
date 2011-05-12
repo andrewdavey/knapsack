@@ -17,6 +17,11 @@ body {
     position: relative;
 }
 
+#header h1 a {
+    color: #4F504D;
+    text-decoration: none;
+}
+
 #navigation {
     position: absolute;
     right: 0;
