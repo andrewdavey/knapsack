@@ -1,0 +1,94 @@
+html {
+    background-color: #FEFFF9;
+    color: #333;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 62.5%;
+}
+
+#wrap {
+    width: 960px;
+    margin: 0 auto;
+}
+
+#header {
+    position: relative;
+}
+
+#navigation {
+    position: absolute;
+    right: 0;
+    top: 2.5em;
+    font-size: 1.5em;
+    color: #ccc;
+}
+#navigation a {
+    padding: 0 1em;
+}
+
+#main {
+    position: relative;
+}
+
+#sidebar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30em;
+}
+
+#sidebar p {
+    font-size: 1.2em;
+}
+
+#content p {
+    width: 35em;
+    font-size: 1.6em;
+    line-height: 1.4em;
+}
+
+h1 {
+    font-family: Amaranth, sans-serif;
+    font-size: 6em;
+    color: #4F504D;
+}
+
+h2 {
+    font-family: Amaranth, sans-serif;
+    font-size: 3em;
+    color: #3C3D3A;
+    margin-top: 2em;
+}
+
+#download {
+    display: block;
+    font-size: 2.5em;
+    line-height: 2em;
+    margin-bottom: 1em;
+    border: 1px solid #666;
+    text-align: center;
+    color: #222;
+    text-decoration: none;
+    background-color: #f2f2f2;
+    background-image: -moz-linear-gradient(top, #fcfcfc, #f7f7f7 3%, #f2f2f2 12%, #d9d9d9 90%, #bfbfbf);
+    background-image: -webkit-gradient(linear, center top, center bottom, from(#fcfcfc), to(#bfbfbf), color-stop(3%, #f7f7f7), color-stop(12%, #f2f2f2), color-stop(90%, #d9d9d9));
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    border-radius: 3px;
+}
+#download:hover {
+    color: #000;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.75);
+}
+
+pre {
+    font-size: 1.8em;
+    padding: .5em 0 .5em 1em;
+    border-left: .5em solid #ddd;
+    background-color: #eee;
+}
+
+code {
+    font-family: 'Inconsolata', Monospace;
+}

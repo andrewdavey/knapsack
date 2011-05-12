@@ -1,85 +1,109 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset='utf-8'>
-
-  <title>andrewdavey/knapsack @ GitHub</title>
-
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #3b873d;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #c478c2; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #c478c2; }
-    h3 { text-align: center; color: #c478c2; }
-    a { color: #c478c2; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
+    <title>Knapsack - automatic JavaScript dependency management for ASP.NET</title>
+    <link href="http://fonts.googleapis.com/css?family=Amaranth:regular" rel="stylesheet" type="text/css"/>
+    <link href="http://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" type="text/css"/>
+    <link href="site.css" type="text/css" rel="stylesheet"/>
 </head>
-
 <body>
-  <a href="http://github.com/andrewdavey/knapsack"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+    <div id="wrap">
+        <div id="header">
+            <h1>Knapsack</h1>
+            <div id="navigation">
+                <a href="http://aboutcode.net/knapsack">Home</a> | 
+                <a href="https://github.com/andrewdavey/knapsack">Source</a> | 
+                <a href="https://github.com/andrewdavey/knapsack/wiki">Wiki</a>
+            </div>
+        </div>
+        <div id="main">
+            <div id="content">
+                <p>
+                    Knapsack is an automatic JavaScript dependency manager for ASP.NET.</p>
+                <p>
+                    Are you wasting time correctly ordering, concatenating and minifying your JavaScript?
+                    How about debugging that 10,000 line minified script? Knapsack solves all these
+                    problems. It's easy to install (via nuget) and provides some fun extras, like CoffeeScript
+                    support!
+                </p>
+                <p>
+                    Knapsack is free, open source, software.</p>
 
-  <div id="container">
+                <h2>A quick walk-though</h2>
+                <p>Knapsack is added to a web application project using <a href="http://nuget.org/">nuget</a>.</p>
+                <pre><code>PM> Install-Package Knapsack</code></pre>
+                <p>The application's JavaScript files are arranged into logical modules using folders.</p>
+                <p>Each JavaScript file declares it's references using Visual Studio XML comments. For example:</p>
+                <pre><code><b>/// &lt;reference path="../lib/jquery.js"/&gt;</b>
+<b>/// &lt;reference path="menu.js"/&gt;</b>
 
-    <div class="download">
-      <a href="http://github.com/andrewdavey/knapsack/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/andrewdavey/knapsack/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
+$(document).ready(function() {
+    $("#menu").menu();
+});
+</code></pre>
+                <p>In each view page (or partial view), any directly required scripts are referenced using a simple method call.
+                We <strong>do not</strong> have to explicitly reference any scripts further back along the dependency chain. 
+                Knapsack will figure out those for us!
+                </p>
+                <pre><code>@{
+    ViewBag.Title = "Epic Page";
+    <b>Html.AddScriptReference("scripts/app/main.js");</b>
+    <b>Html.AddScriptReference("scripts/widgets/twitter.js");</b>
+}
+
+&lt;p&gt;Epic page content&lt/p&gt;</code></pre>
+                <p>In the layout/master page, a single HTML helper call generates all the required script elements.</p>
+                <pre><code>&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;@ViewBag.Title&lt;/title&gt;
+  <b>@Html.RenderScripts()</b>
+&lt;/head&gt;
+&lt;body&gt;
+  @RenderBody()
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+                <p>When the application is run in debug mode, Knapsack generates all the <samp>&lt;script&gt;</samp> tags.
+                They reference the original source files to make debugging easier. The scripts are in dependency order.</p>
+                <p>A "cache breaker" is appended to the URLs
+                to avoid having to force-reload by hand.</p>
+                <pre><code>&lt;script src="/scripts/lib/jquery.js?nocache=1230981309182321" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="/scripts/lib/jquery-ui.js?nocache=1230981309182321" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="/scripts/widgets/twitter.js?nocache=1230981309182321" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="/scripts/app/menu.js?nocache=1230981309182321" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="/scripts/app/main.js?nocache=1230981309182321" type="text/javascript"&gt;&lt;/script&gt;</code></pre>
+
+                <p>Now for the magic, we switch off debug mode in the web.config. Knapsack will generate special "module"
+                script elements.</p>
+                <pre><code>&lt;script src="/knapsack.axd/modules/lib_bc7ff25a612a696b9d227d2f845f896e9b4d6679" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="/knapsack.axd/modules/widgets_5e5f87d6878910f59a022382d28191415e752832" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="/knapsack.axd/modules/app_242f9b6e12e37cb3bde05c874296ca2db74764ab" type="text/javascript"&gt;&lt;/script&gt;
+</code></pre>
+                <p>The modules contain the ordered, concatenated and minified scripts from the source files. The HTTP cache
+                is also set to be "long lived" so a web browser only needs to them download once.</p>
+                <p>The long string of characters in the URL is a SHA-1 hash of the module. If the module changes in the future,
+                the URL will be different and so web browsers download the new module automatically. This is versioning for free!</p>
+
+                <h2>Awesome Extras</h2>
+                <p><a href="http://jashkenas.github.com/coffee-script/">CoffeeScript</a> support is built-in. 
+                Simply reference <code>.coffee</code> files and Knapsack will
+                compile them and return JavaScript to the web browser.</p>
+                <p>Knapsack is available as a command line tool as well.</p>
+                <pre><code>&gt; knapsack path/to/scripts</code></pre>
+                <p>That will generate the module JavaScript for all the <code>.js</code> and <code>.coffee</code> files it finds in the given path.</p>
+            </div>  
+            <div id="sidebar">
+                <a href="#" id="download">Download</a>
+
+                <p>Knapsack is created by <a href="http://aboutcode.net/">Andrew Davey</a>.</p>
+                <p>Andrew loves to get feedback, bug reports and (most of all) pull requests. 
+                So <a href="https://github.com/andrewdavey/knapsack">fork the code on GitHub</a> and get hacking!</p>
+                <p>Send questions to andrew@equin.co.uk or <a href="http://twitter.com/andrewdavey">@andrewdavey</a> on twitter.</p>
+            </div>
+        </div>      
+        <div id="footer">
+        </div>
     </div>
-
-    <h1><a href="http://github.com/andrewdavey/knapsack">knapsack</a>
-      <span class="small">by <a href="http://github.com/andrewdavey">andrewdavey</a></span></h1>
-
-    <div class="description">
-      Knapsack is an automatic JavaScript dependency manager for ASP.NET.
-    </div>
-
-    <p>Are you wasting time correctly ordering, concatenating and minifying your JavaScript? How about debugging that 10,000 line minified script? Knapsack solves all these problems. It's easy to install (via nuget) and provides some fun extras, like CoffeeScript support!
- 
-Knapsack is free, open source, software.</p><h2>Dependencies</h2>
-<p>ASP.NET</p>
-<h2>Install</h2>
-<p>Install-Package Knapsack</p>
-<h2>License</h2>
-<p>MIT License</p>
-<h2>Authors</h2>
-<p>Andrew Davey (andrew@equin.co.uk)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Andrew Davey (andrew@equin.co.uk)<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/andrewdavey/knapsack/zipball/master">zip</a> or
-      <a href="http://github.com/andrewdavey/knapsack/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/andrewdavey/knapsack</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/andrewdavey/knapsack">andrewdavey/knapsack</a>
-    </div>
-
-  </div>
-
-  
+    <script src="http://localhost:8001/vogue-client.js" type="text/javascript"></script>
 </body>
 </html>
