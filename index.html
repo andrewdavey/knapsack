@@ -47,8 +47,8 @@ $(document).ready(function() {
                 </p>
                 <pre><code>@{
     ViewBag.Title = "Epic Page";
-    <b>Html.AddScriptReference("scripts/app/main.js");</b>
-    <b>Html.AddScriptReference("scripts/widgets/twitter.js");</b>
+    <b>Html.ReferenceScript("scripts/app/main.js");</b>
+    <b>Html.ReferenceScript("scripts/widgets/twitter.js");</b>
 }
 
 &lt;p&gt;Epic page content&lt/p&gt;</code></pre>
@@ -75,9 +75,9 @@ $(document).ready(function() {
 
                 <p>Now for the magic, we switch off debug mode in the web.config. Knapsack will generate special "module"
                 script elements.</p>
-                <pre><code>&lt;script src="/knapsack.axd/modules/lib_bc7ff25a612a696b9d227d2f845f896e9b4d6679" type="text/javascript"&gt;&lt;/script&gt;
-&lt;script src="/knapsack.axd/modules/widgets_5e5f87d6878910f59a022382d28191415e752832" type="text/javascript"&gt;&lt;/script&gt;
-&lt;script src="/knapsack.axd/modules/app_242f9b6e12e37cb3bde05c874296ca2db74764ab" type="text/javascript"&gt;&lt;/script&gt;
+                <pre><code>&lt;script src="/knapsack.axd/scripts/lib_bc7ff25a612a696b9d227d2f845f896e9b4d6679" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="/knapsack.axd/scripts/widgets_5e5f87d6878910f59a022382d28191415e752832" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="/knapsack.axd/scripts/app_242f9b6e12e37cb3bde05c874296ca2db74764ab" type="text/javascript"&gt;&lt;/script&gt;
 </code></pre>
                 <p>The modules contain the ordered, concatenated and minified scripts from the source files. The HTTP cache
                 is also set to be "long lived" so a web browser only needs to them download once.</p>
