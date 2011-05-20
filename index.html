@@ -31,8 +31,21 @@
 
                 <h2>A quick walk-though</h2>
                 <p>Knapsack is added to a web application project using <a href="http://nuget.org/">nuget</a>.</p>
-                <pre><code>PM> Install-Package Knapsack</code></pre>
+                <pre><code>PM&gt; Install-Package Knapsack</code></pre>
                 <p>The application's JavaScript files are arranged into logical modules using folders.</p>
+                <pre><code>~/scripts/libs/
+    jquery.js
+    jquery-ui.js
+    knockout.js
+
+~/scripts/widgets/
+    twitter.js
+
+~/scripts/app/
+    main.js
+    menu.js</code></pre>
+                <p>Note that there are <strong>no .min.js</strong> files, only pure original source. 
+                Knapsack will handle minification for us.</p>
                 <p>Each JavaScript file declares its references using Visual Studio XML comments. For example:</p>
                 <pre><code><b>/// &lt;reference path="../lib/jquery.js"/&gt;</b>
 <b>/// &lt;reference path="menu.js"/&gt;</b>
