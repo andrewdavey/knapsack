@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Script Loader";
+    Layout = null;
+
+    Html.ReferenceStylesheet("styles/app/site.css");
+    Html.ReferenceStylesheet("styles/color-picker/ui.css");
+
+    // Put the rest at in the script loader
+    Html.ReferenceScript("scripts/color-picker/init.js");
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    @Html.RenderStylesheetLinks()
+
+    <script type="text/javascript" src="/scripts/lib/modernizr-2.0.js"></script>
+    <script type="text/javascript" src="/scripts/lib/jquery.js"></script>
+</head>
+<body>
+   
+   <ul>
+     
+   </ul>
+
+    <script type="text/javascript">
+
+   // Use RenderScriptsUrl when the raw script(s) url for a module is needed.  In other words,
+   // no script tag and src attribute wrapped around the url.
+    yepnope({
+        load:[@Html.RenderScriptsUrl("scripts/color-picker", s => "'" + string.Join("','", s) + "'")],
+        callback: function(url, result, key){
+            $("ul:first").append("<li><b>Finished loading: </b>" + url  + "</li>");
+        }
+    });
+    
+
+    </script>
+    @Html.RenderScripts("body")
+</body>
+</html>

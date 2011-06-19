@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 
@@ -43,6 +44,11 @@ namespace Knapsack.Web.Mvc
         public static IHtmlString RenderScripts(this HtmlHelper html, string location = null)
         {
            return CreatePageHelper(html).RenderScripts(location);
+        }
+
+        public static IHtmlString RenderScriptsUrl(this HtmlHelper html,  string modulePath, Func<IEnumerable<string>, string> formatAction)
+        {
+            return CreatePageHelper(html).RenderScriptUrl(modulePath, formatAction);
         }
 
         /// <summary>

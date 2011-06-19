@@ -94,6 +94,32 @@ namespace Knapsack.Web
             }
         }
 
+        public IHtmlString RenderScriptUrl(string modulePath, Func<IEnumerable<string>, string> formatAction)
+        {
+           IEnumerable<string> urls;
+
+            if(useModules)
+            {
+                urls = scriptReferenceBuilder
+                    .GetRequiredModules()
+                    .Where(m => m.Path.ToLower() == modulePath)
+                    .Select(ReleaseScriptUrl);
+            }
+            else
+            {
+                urls = scriptReferenceBuilder
+                    .GetRequiredModules()
+                    .Where(m => m.Path.ToLower() == modulePath)
+                    .SelectMany(m => m.Resources)
+                    .Select(DebugScriptUrl);
+            }
+
+            var scriptUrls = BuildHtmlElements(urls, "{0}");
+
+            var html = formatAction(scriptUrls);
+            return new HtmlString(html);
+        }
+
         /// <summary>
         /// Records that the calling view requires the given stylesheet. This does not render any
         /// HTML. Call <see cref="RenderStylesheets"/> to actually output the link elements.

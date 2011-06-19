@@ -229,6 +229,50 @@ namespace Knapsack.Web
             );
         }
 
+        [Fact]
+        public void RenderScriptUrl_uses_custom_formatting_action_with_raw_urls()
+        {
+            var resources = new[]
+                                {
+
+                                    new Resource("lib/test1.js", new byte[] {1, 2, 3}, new string[0]),
+                                    new Resource("lib/test2.js", new byte[] {1, 2, 3}, new string[0])
+                                };
+
+            var referenceBuilder = new FakeReferenceBuilder();
+            var module = new Module("lib", resources, new string[0], null);
+            referenceBuilder.GetRequiredModules = () => new[] { module };
+
+            var useModules = false;
+
+            var pageHelper = new PageHelper(useModules, false, referenceBuilder, new FakeReferenceBuilder(), VirtualPathToAbsolute);
+            var html = pageHelper.RenderScriptUrl("lib", s => "'" + string.Join("','", s) + "'");
+
+            html.ToHtmlString().ShouldEqual("'/lib/test1.js?010203','/lib/test2.js?010203'");
+        }
+
+        [Fact]
+        public void RenderScriptUrl_uses_custom_formatting_action_with_a_single_url()
+        {
+            var resources = new[]
+                                {
+
+                                    new Resource("lib/test1.js", new byte[] {1, 2, 3}, new string[0]),
+                                    new Resource("lib/test2.js", new byte[] {1, 2, 3}, new string[0])
+                                };
+
+            var referenceBuilder = new FakeReferenceBuilder();
+            var module = new Module("lib", resources, new string[0], null);
+            referenceBuilder.GetRequiredModules = () => new[] { module };
+
+            var useModules = true;
+
+            var pageHelper = new PageHelper(useModules, false, referenceBuilder, new FakeReferenceBuilder(), VirtualPathToAbsolute);
+            var html = pageHelper.RenderScriptUrl("lib", s => "'" + string.Join("','", s) + "'");
+
+            html.ToHtmlString().ShouldEqual("'/knapsack.axd/scripts/lib_0d30bac59ebc6b1cf3170feaae3047bf13070e7b'");
+        }
+
         string VirtualPathToAbsolute(string path)
         {
             return path.Substring(1); // Trim off the leading "~".
