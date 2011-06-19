@@ -6,3 +6,4 @@ jquery.validate.unobtrusive.js
 Class.js
 jquery.tmpl.js
 knockout.js
+modernizr-2.0.js

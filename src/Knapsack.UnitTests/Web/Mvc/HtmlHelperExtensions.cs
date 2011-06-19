@@ -77,17 +77,23 @@ namespace Knapsack.Web.Mvc
                 HtmlHelperExtensions.CreatePageHelperImpl(htmlHelper); 
             });
         }
-
+        
         class MockPageHelper : IPageHelper
         {
             public Action<string> ReferenceScript;
             public Action<string> ReferenceStylesheet;
             public Func<IHtmlString> RenderScripts;
             public Func<IHtmlString> RenderStylesheet;
+            public Func<IHtmlString> RenderScriptsUrl;
 
             void IPageHelper.ReferenceScript(string scriptPath)
             {
                 ReferenceScript(scriptPath);
+            }
+
+            public IHtmlString RenderScriptUrl(string modulePath, Func<IEnumerable<string>, string> formatAction)
+            {
+                return RenderScriptsUrl();
             }
 
             void IPageHelper.ReferenceStylesheet(string cssPath)

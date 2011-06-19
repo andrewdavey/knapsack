@@ -16,5 +16,9 @@ namespace Example.Controllers
             return View();
         }
 
+        public ActionResult Raw()
+        {
+            return View();
+        }
     }
 }
